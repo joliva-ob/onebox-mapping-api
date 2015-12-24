@@ -1,0 +1,174 @@
+FORMAT: 1A
+HOST: http://onebox-api-url/1.0/mapping-api
+
+# onebox-mapping-api
+
+Mapping is a simple API to retrieve a value from a given key value, from onebox domain to an external one and also from external to onebox. The returned value is a free text that can be another key or a simple final value.
+
+## Integration mappings Collection [/{entityId}/attributes/{attributeId}/integration-mappings/{oneboxKey}]
+
+### Retrieve an External mapping [GET]
+
+To retrieve an external value mapping from a given Onebox key and atribute domain.
+
++ Parameters
+
+    + entityId (required, string) ... Onebox entity id, can be a promoter, a venue, etc
+    + attributeId (required, enum[string])
+      To indicate the kind of mapping you would obtain:
+        + Members
+          + `price_levels` - Filter by price levels.
+          + `seats` - Filter by seats
+          + `views` - Graphical container of venue seats
+          + `tickets` - Unique identifier of a capacity units
+          + `seasons` - Temporal period in order to gather events.
+    + oneboxKey (required, string) ... To indicate the key you would like to retrieve value for
+
++ Response 200 (application/json)
+
+        {
+            "entityId": "123",
+            "attributeId": "1234",
+            "direction": "integration-mappings",
+            "key": "555",
+            "value": "999"
+        }
+
++ Response 400 (application/json)
+
+        {
+          "error": "Bad request",
+          "error_description": "There was a syntax error, check your params request and try it again."
+        }
+
++ Response 401 (application/json)
+
+        {
+          "error": "unauthorized",
+          "error_description": "Full authentication is required to access this resource"
+        }
+
+### Create or update an External mapping [PUT]
+
+You may create your own External mapping using this action. It takes a JSON
+object containing an Onebox key and an External mapped value.
+
++ Request (application/json)
+
+            {
+              "entityId": "123",
+              "attributeId": "1234",
+              "direction": "integration-mappings",
+              "key": "555",
+              "value": "999"
+            }
+
++ Response 200 (application/json)
+
+    + Body
+
+            {
+              "entityId": "123",
+              "attributeId": "1234",
+              "direction": "integration-mappings",
+              "key": "555",
+              "value": "999"
+            }
+
++ Response 400 (application/json)
+
+            {
+              "error": "Bad request",
+              "error_description": "There was a syntax error, check your params request and try it again."
+            }
+
++ Response 401 (application/json)
+
+            {
+              "error": "unauthorized",
+              "error_description": "Full authentication is required to access this resource"
+            }
+
+## Onebox mappings Collection [/{entityId}/attributes/{attributeId}/onebox-mappings/{integrationKey}]
+
+### Retrieve an Onebox mapping [GET]
+
+To retrieve an Onebox value mapping from a given External integration key and atribute domain.
+
++ Parameters
+
+    + entityId (required, string) ... Onebox entity id, can be a promoter, a venue, etc
+    + attributeId (required, enum[string])
+      To indicate the kind of mapping you would obtain:
+        + Members
+          + `price_levels` - Filter by price levels.
+          + `seats` - Filter by seats
+          + `views` - Graphical container of venue seats
+          + `tickets` - Unique identifier of a capacity units
+          + `seasons` - Temporal period in order to gather events.
+    + integrationKey (required, string) ... To indicate the key you would like to retrieve value for
+
++ Response 200 (application/json)
+
+        {
+            "entityId": "123",
+            "attributeId": "1234",
+            "direction": "onebox-mappings",
+            "key": "555",
+            "value": "999"
+        }
+
++ Response 400 (application/json)
+
+        {
+          "error": "Bad request",
+          "error_description": "There was a syntax error, check your params request and try it again."
+        }
+
++ Response 401 (application/json)
+
+        {
+          "error": "unauthorized",
+          "error_description": "Full authentication is required to access this resource"
+        }
+
+### Create or update an Onebox mapping [PUT]
+
+You may create your own Onebox mapping using this action. It takes a JSON
+object containing an External Integration key and an Onebox mapped value.
+
++ Request (application/json)
+
+            {
+              "entityId": "123",
+              "attributeId": "1234",
+              "direction": "onebox-mappings",
+              "key": "555",
+              "value": "999"
+            }
+
++ Response 200 (application/json)
+
+    + Body
+
+            {
+              "entityId": "123",
+              "attributeId": "1234",
+              "direction": "onebox-mappings",
+              "key": "555",
+              "value": "999"
+            }
+
++ Response 400 (application/json)
+
+            {
+              "error": "Bad request",
+              "error_description": "There was a syntax error, check your params request and try it again."
+            }
+
++ Response 401 (application/json)
+
+            {
+              "error": "unauthorized",
+              "error_description": "Full authentication is required to access this resource"
+            }
