@@ -1,80 +1,174 @@
 FORMAT: 1A
-HOST: http://polls.apiblueprint.org/
+HOST: http://onebox-api-url/1.0/mapping-api
 
 # onebox-mapping-api
 
-Polls is a simple API allowing consumers to view polls and vote in them.
+Mapping is a simple API to retrieve a value from a given key value, from onebox domain to an external one and also from external to onebox. The returned value is a free text that can be another key or a simple final value.
 
-## Questions Collection [/questions]
+## Integration mappings Collection [/{entityId}/attributes/{attributeId}/integration-mappings/{oneboxKey}]
 
-### List All Questions [GET]
+### Retrieve an External mapping [GET]
+
+To retrieve an external value mapping from a given Onebox key and atribute domain.
+
++ Parameters
+
+    + entityId (required, string) ... Onebox entity id, can be a promoter, a venue, etc
+    + attributeId (required, enum[string])
+      To indicate the kind of mapping you would obtain:
+        + Members
+          + `price_levels` - Filter by price levels.
+          + `seats` - Filter by seats
+          + `views` - Graphical container of venue seats
+          + `tickets` - Unique identifier of a capacity units
+          + `seasons` - Temporal period in order to gather events.
+    + oneboxKey (required, string) ... To indicate the key you would like to retrieve value for
 
 + Response 200 (application/json)
 
-        [
-            {
-                "question": "Favourite programming language?",
-                "published_at": "2015-08-05T08:40:51.620Z",
-                "choices": [
-                    {
-                        "choice": "Swift",
-                        "votes": 2048
-                    }, {
-                        "choice": "Python",
-                        "votes": 1024
-                    }, {
-                        "choice": "Objective-C",
-                        "votes": 512
-                    }, {
-                        "choice": "Ruby",
-                        "votes": 256
-                    }
-                ]
-            }
-        ]
+        {
+            "entityId": "123",
+            "attributeId": "1234",
+            "direction": "integration-mappings",
+            "key": "555",
+            "value": "999"
+        }
 
-### Create a New Question [POST]
++ Response 400 (application/json)
 
-You may create your own question using this action. It takes a JSON
-object containing a question and a collection of answers in the
-form of choices.
+        {
+          "error": "Bad request",
+          "error_description": "There was a syntax error, check your params request and try it again."
+        }
+
++ Response 401 (application/json)
+
+        {
+          "error": "unauthorized",
+          "error_description": "Full authentication is required to access this resource"
+        }
+
+### Create or update an External mapping [PUT]
+
+You may create your own External mapping using this action. It takes a JSON
+object containing an Onebox key and an External mapped value.
 
 + Request (application/json)
 
-        {
-            "question": "Favourite programming language?",
-            "choices": [
-                "Swift",
-                "Python",
-                "Objective-C",
-                "Ruby"
-            ]
-        }
+            {
+              "entityId": "123",
+              "attributeId": "1234",
+              "direction": "integration-mappings",
+              "key": "555",
+              "value": "999"
+            }
 
-+ Response 201 (application/json)
-
-    + Headers
-
-            Location: /questions/2
++ Response 200 (application/json)
 
     + Body
 
             {
-                "question": "Favourite programming language?",
-                "published_at": "2015-08-05T08:40:51.620Z",
-                "choices": [
-                    {
-                        "choice": "Swift",
-                        "votes": 0
-                    }, {
-                        "choice": "Python",
-                        "votes": 0
-                    }, {
-                        "choice": "Objective-C",
-                        "votes": 0
-                    }, {
-                        "choice": "Ruby",
-                        "votes": 0
-                    }
-                ]
+              "entityId": "123",
+              "attributeId": "1234",
+              "direction": "integration-mappings",
+              "key": "555",
+              "value": "999"
+            }
+
++ Response 400 (application/json)
+
+            {
+              "error": "Bad request",
+              "error_description": "There was a syntax error, check your params request and try it again."
+            }
+
++ Response 401 (application/json)
+
+            {
+              "error": "unauthorized",
+              "error_description": "Full authentication is required to access this resource"
+            }
+
+## Onebox mappings Collection [/{entityId}/attributes/{attributeId}/onebox-mappings/{integrationKey}]
+
+### Retrieve an Onebox mapping [GET]
+
+To retrieve an Onebox value mapping from a given External integration key and atribute domain.
+
++ Parameters
+
+    + entityId (required, string) ... Onebox entity id, can be a promoter, a venue, etc
+    + attributeId (required, enum[string])
+      To indicate the kind of mapping you would obtain:
+        + Members
+          + `price_levels` - Filter by price levels.
+          + `seats` - Filter by seats
+          + `views` - Graphical container of venue seats
+          + `tickets` - Unique identifier of a capacity units
+          + `seasons` - Temporal period in order to gather events.
+    + integrationKey (required, string) ... To indicate the key you would like to retrieve value for
+
++ Response 200 (application/json)
+
+        {
+            "entityId": "123",
+            "attributeId": "1234",
+            "direction": "onebox-mappings",
+            "key": "555",
+            "value": "999"
+        }
+
++ Response 400 (application/json)
+
+        {
+          "error": "Bad request",
+          "error_description": "There was a syntax error, check your params request and try it again."
+        }
+
++ Response 401 (application/json)
+
+        {
+          "error": "unauthorized",
+          "error_description": "Full authentication is required to access this resource"
+        }
+
+### Create or update an Onebox mapping [PUT]
+
+You may create your own Onebox mapping using this action. It takes a JSON
+object containing an External Integration key and an Onebox mapped value.
+
++ Request (application/json)
+
+            {
+              "entityId": "123",
+              "attributeId": "1234",
+              "direction": "onebox-mappings",
+              "key": "555",
+              "value": "999"
+            }
+
++ Response 200 (application/json)
+
+    + Body
+
+            {
+              "entityId": "123",
+              "attributeId": "1234",
+              "direction": "onebox-mappings",
+              "key": "555",
+              "value": "999"
+            }
+
++ Response 400 (application/json)
+
+            {
+              "error": "Bad request",
+              "error_description": "There was a syntax error, check your params request and try it again."
+            }
+
++ Response 401 (application/json)
+
+            {
+              "error": "unauthorized",
+              "error_description": "Full authentication is required to access this resource"
             }
